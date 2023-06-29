@@ -8,9 +8,9 @@ from app.models import Song, SongCreate
 app = FastAPI()
 
 
-@app.on_event('startup')
-async def on_startup():
-    await init_db()
+#@app.on_event('startup')
+#async def on_startup():
+#    await init_db()
 
 @app.get("/ping")
 async def pong():
@@ -20,11 +20,11 @@ async def pong():
 async def get_songs(session: Session = Depends(get_session)):
     result = await session.execute(select(Song))
     songs = result.scalars().all()
-    return [Song(name=song.name, artist=song.artist, id=song.id) for song in songs]
+    return [Song(name=song.name, artist=song.artist, year=song.year, id=song.id) for song in songs]
 
 @app.post('/songs')
 async def add_song(song: SongCreate, session: Session = Depends(get_session)):
-    song = Song(name=song.name, artist=song.artist)
+    song = Song(name=song.name, artist=song.artist, year=song.year)
     session.add(song)
     await session.commit()
     await session.refresh(song)
