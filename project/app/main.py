@@ -13,4 +13,4 @@ app = FastAPI()
 #async def on_startup():
 #    await init_db()
 
-app.include_router(handlers.router, prefix='/songs_up')
+app.include_router(handlers.router, prefix='/songs')
